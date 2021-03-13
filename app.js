@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const cors = require('cors');
-const path = require('path');
+/* const path = require('path'); */
 const router = require('./routes');
 const { login, createUser } = require('./controllers/users');
 const registerValidator = require('./middlewares/validators/register');
@@ -32,14 +32,14 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-//СЖЕЧЬ
-app.use((req, res, next) => {
+// для теста
+/* app.use((req, res, next) => {
   req.user = {
     _id: '604ca377f6f16d0a6ca631b8',
   };
 
   next();
-});
+}); */
 
 app.post('/signin', loginValidator, login);
 app.post('/signup', registerValidator, createUser);
