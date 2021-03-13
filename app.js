@@ -35,7 +35,7 @@ app.get('/crash-test', () => {
 //сжечь
 app.use((req, res, next) => {
   req.user = {
-    _id: '604ca377f6f16d0a6ca631b8',
+    _id: '6011b0c794f4f61068b92487',
   };
 
   next();
