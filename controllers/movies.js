@@ -27,7 +27,7 @@ const createMovie = (req, res, next) => {
 const deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
-    .orFail(new NotFound('Нет карточки с таким id'))
+    .orFail(new NotFound('Нет фильма с таким id'))
     .then((movie) => {
       if (req.user._id === movie.owner.toString()) {
         Movie.findByIdAndRemove(req.params.movieId)

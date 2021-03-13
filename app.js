@@ -32,10 +32,10 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-//сжечь
+//СЖЕЧЬ
 app.use((req, res, next) => {
   req.user = {
-    _id: '6011b0c794f4f61068b92487',
+    _id: '604ca377f6f16d0a6ca631b8',
   };
 
   next();
