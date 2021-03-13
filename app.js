@@ -5,9 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 /* const path = require('path'); */
 const router = require('./routes');
-const { login, createUser } = require('./controllers/users');
-const registerValidator = require('./middlewares/validators/register');
-const loginValidator = require('./middlewares/validators/login');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const { NotFound } = require('./errors');
@@ -41,8 +38,6 @@ app.get('/crash-test', () => {
   next();
 }); */
 
-app.post('/signin', loginValidator, login);
-app.post('/signup', registerValidator, createUser);
 
 app.use('/', router);
 /* app.use(express.static(path.join(__dirname, '../frontend/build'))); */
