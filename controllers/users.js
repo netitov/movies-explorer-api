@@ -6,15 +6,15 @@ const {
 } = require('../errors');
 const { JWT_SECRET, JWT_TTL } = require('../config');
 
-const getUsers = (req, res, next) => {
+/* const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.send(users);
     })
     .catch(next);
-};
+}; */
 
-const getUser = (req, res, next) => {
+/* const getUser = (req, res, next) => {
   const { userId } = req.params;
   User.findOne({ _id: userId })
 
@@ -30,7 +30,7 @@ const getUser = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-};
+}; */
 
 const getUserMe = (req, res, next) => {
   const userId = req.user._id;
@@ -51,7 +51,7 @@ const getUserMe = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    email, password, name
   } = req.body;
 
   User.findOne({ email })
@@ -62,7 +62,7 @@ const createUser = (req, res, next) => {
       return bcrypt.hash(password, 10);
     })
     .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
+      email, password: hash, name,
     }))
     .then((user) => {
       res.send({ _id: user._id, email: user.email });
@@ -77,10 +77,10 @@ const createUser = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { email, name } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name, about },
+    { email, name },
     {
       new: true,
       runValidators: true,
@@ -97,30 +97,6 @@ const updateUser = (req, res, next) => {
         throw new BadRequest('Введены некорректные данные');
       }
       throw err;
-    })
-    .catch(next);
-};
-
-const updateAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  User.findByIdAndUpdate(
-    req.user._id,
-    { avatar },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .then((u) => {
-      if (!u) {
-        throw new NotFound('Нет пользователя с таким id');
-      }
-      return res.send(u);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new BadRequest('Введены некорректные данные');
-      } throw err;
     })
     .catch(next);
 };
@@ -152,5 +128,5 @@ const login = (req, res, next) => {
 };
 
 module.exports = {
-  getUsers, getUser, createUser, updateUser, updateAvatar, login, getUserMe,
+  createUser, updateUser, login, getUserMe,
 };

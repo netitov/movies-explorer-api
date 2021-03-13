@@ -15,7 +15,7 @@ const { NotFound } = require('./errors');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -32,11 +32,20 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
+//сжечь
+app.use((req, res, next) => {
+  req.user = {
+    _id: '604ca377f6f16d0a6ca631b8',
+  };
+
+  next();
+});
+
 app.post('/signin', loginValidator, login);
 app.post('/signup', registerValidator, createUser);
 
 app.use('/', router);
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+/* app.use(express.static(path.join(__dirname, '../frontend/build'))); */
 
 app.use(errorLogger);
 

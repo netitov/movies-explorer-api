@@ -1,20 +1,20 @@
-const Card = require('../models/card');
+const Movie = require('../models/movie');
 const {
   Forbidden, NotFound, BadRequest,
 } = require('../errors');
 
-const getCards = (req, res, next) => {
-  Card.find({})
-    .then((cards) => {
-      res.send(cards);
+const getMovies = (req, res, next) => {
+  Movie.find({})
+    .then((movies) => {
+      res.send(movies);
     })
     .catch(next);
 };
 
-const createCard = (req, res, next) => {
-  const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.send(card))
+const createMovie = (req, res, next) => {
+  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId } = req.body;
+  Movie.create({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId, owner: req.user._id })
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequest('Введены некорректные данные');
@@ -24,14 +24,14 @@ const createCard = (req, res, next) => {
     .catch(next);
 };
 
-const deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
-  Card.findById(cardId)
+const deleteMovie = (req, res, next) => {
+  const { movieId } = req.params;
+  Movie.findById(movieId)
     .orFail(new NotFound('Нет карточки с таким id'))
-    .then((card) => {
-      if (req.user._id === card.owner.toString()) {
-        Card.findByIdAndRemove(req.params.cardId)
-          .then((delcard) => res.send({ delcard }))
+    .then((movie) => {
+      if (req.user._id === movie.owner.toString()) {
+        Movie.findByIdAndRemove(req.params.movieId)
+          .then((delmovie) => res.send({ delmovie }))
           .catch(next);
       } else {
         throw new Forbidden('Нет доступа');
@@ -43,17 +43,17 @@ const deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-const setLike = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
+/* const setLike = (req, res, next) => {
+  Movie.findByIdAndUpdate(
+    req.params.movieId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => {
-      if (!card) {
+    .then((movie) => {
+      if (!movie) {
         throw new NotFound('Нет карточки с таким id');
       }
-      res.send(card);
+      res.send(movie);
     })
     .catch((err) => {
       throw err;
@@ -64,16 +64,16 @@ const setLike = (req, res, next) => {
 };
 
 const deleteLike = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
+  Movie.findByIdAndUpdate(
+    req.params.movieId,
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => {
-      if (!card) {
+    .then((movie) => {
+      if (!movie) {
         throw new NotFound('Нет карточки с таким id');
       }
-      res.send(card);
+      res.send(movie);
     })
     .catch((err) => {
       throw err;
@@ -82,7 +82,8 @@ const deleteLike = (req, res, next) => {
       next(err);
     });
 };
+ */
 
 module.exports = {
-  getCards, createCard, deleteCard, setLike, deleteLike,
+  getMovies, createMovie, deleteMovie
 };

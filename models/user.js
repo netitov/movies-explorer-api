@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-import { isEmail } from 'validator';
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -8,7 +7,13 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     required: true,
     unique: true,
-    validate: { validator: isEmail , message: 'Invalid email.' }
+    validate: {
+      validator(v) {
+        const regex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        return regex.test(v);
+      },
+      message: 'Invalid email',
+    },
   },
   password: {
     type: String,
