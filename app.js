@@ -31,13 +31,13 @@ app.get('/crash-test', () => {
 });
 
 // для теста
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   req.user = {
     _id: '604ca377f6f16d0a6ca631b8',
   };
 
   next();
-}); */
+});
 
 
 app.use('/', router);
