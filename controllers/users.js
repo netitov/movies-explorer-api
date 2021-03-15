@@ -4,7 +4,7 @@ const User = require('../models/user');
 const {
   NotFound, Conflict, Unauthorized, BadRequest,
 } = require('../errors');
-//const { JWT_SECRET, JWT_TTL } = require('../config');
+// const { JWT_SECRET, JWT_TTL } = require('../config');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 /* const getUsers = (req, res, next) => {

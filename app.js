@@ -2,8 +2,10 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
+const helmet = require('helmet');
 const cors = require('cors');
+const limiter = require('./utils/limiter');
+
 /* const path = require('path'); */
 const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -23,6 +25,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use(requestLogger);
+app.use(limiter);
+app.use(helmet());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
