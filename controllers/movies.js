@@ -46,7 +46,7 @@ const deleteMovie = (req, res, next) => {
     .orFail(new NotFound('Нет фильма с таким id'))
     .then((movie) => {
       if (req.user._id === movie.owner.toString()) {
-        Movie.findByIdAndRemove(req.params.movieId)
+        movie.remove()
           .then((delmovie) => res.send({ delmovie }))
           .catch(next);
       } else {
@@ -58,47 +58,6 @@ const deleteMovie = (req, res, next) => {
     })
     .catch(next);
 };
-
-/* const setLike = (req, res, next) => {
-  Movie.findByIdAndUpdate(
-    req.params.movieId,
-    { $addToSet: { likes: req.user._id } },
-    { new: true },
-  )
-    .then((movie) => {
-      if (!movie) {
-        throw new NotFound('Нет карточки с таким id');
-      }
-      res.send(movie);
-    })
-    .catch((err) => {
-      throw err;
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
-
-const deleteLike = (req, res, next) => {
-  Movie.findByIdAndUpdate(
-    req.params.movieId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
-    .then((movie) => {
-      if (!movie) {
-        throw new NotFound('Нет карточки с таким id');
-      }
-      res.send(movie);
-    })
-    .catch((err) => {
-      throw err;
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
- */
 
 module.exports = {
   getMovies, createMovie, deleteMovie,

@@ -4,34 +4,8 @@ const User = require('../models/user');
 const {
   NotFound, Conflict, Unauthorized, BadRequest,
 } = require('../errors');
-// const { JWT_SECRET, JWT_TTL } = require('../config');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
-
-/* const getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => {
-      res.send(users);
-    })
-    .catch(next);
-}; */
-
-/* const getUser = (req, res, next) => {
-  const { userId } = req.params;
-  User.findOne({ _id: userId })
-
-    .then((u) => {
-      if (!u) {
-        throw new NotFound('Нет пользователя с таким id');
-      }
-      return res.send(u);
-    })
-    .catch((err) => {
-      throw err;
-    })
-    .catch((err) => {
-      next(err);
-    });
-}; */
 
 const getUserMe = (req, res, next) => {
   const userId = req.user._id;
@@ -120,7 +94,7 @@ const login = (req, res, next) => {
     })
     .then((user) => {
       const token = jwt.sign({ _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : 'development',
         { expiresIn: '7d' });
       res.send({ token });
     })

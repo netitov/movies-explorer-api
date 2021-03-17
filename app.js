@@ -5,17 +5,16 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const limiter = require('./utils/limiter');
+const mongo = require('./utils/config');
 
-/* const path = require('path'); */
 const router = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
-const { NotFound } = require('./errors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(mongo, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -34,23 +33,9 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-// для теста
-/* app.use((req, res, next) => {
-  req.user = {
-    _id: '604ca377f6f16d0a6ca631b8',
-  };
-
-  next();
-}); */
-
 app.use('/', router);
-/* app.use(express.static(path.join(__dirname, '../frontend/build'))); */
 
 app.use(errorLogger);
-
-app.use(() => {
-  throw new NotFound('Запрашиваемый ресурс не найден');
-});
 app.use(errorHandler);
 
 app.listen(PORT, () => {
