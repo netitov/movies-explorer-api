@@ -26,7 +26,7 @@ const getUserMe = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const {
-    email, password, name,
+    name, email, password,
   } = req.body;
 
   User.findOne({ email })
