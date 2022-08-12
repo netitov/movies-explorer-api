@@ -1,6 +1,6 @@
 # API для проекта Movies-explorer
 
-1. **Ссылка** на API: https://api.ntmovies.students.nomoredomains.icu
+1. **Ссылка** на API: http://api.movies.netitov.ru
 
 2. **Используемая платформа**: Node.js (Express)
 
